@@ -6,7 +6,7 @@ const Footer = () => {
     <Stack
       sx={{
         marginTop: "70vh",
-        background: "#E8D8C4",
+        background: "#A367B1",
         width: "100vw",
         minHeight: 100,
         justifyContent: "center",
