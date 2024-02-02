@@ -6,6 +6,7 @@ import {
   LinearProgress,
   MenuItem,
   Select,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -13,7 +14,7 @@ import { Formik } from "formik";
 import React from "react";
 import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import $axios from "../../lib/axios.instance";
 import {
@@ -150,9 +151,17 @@ const Register = () => {
               <FormHelperText>{errors.role}</FormHelperText>
             </FormControl>
 
-            <Button variant="contained" type="submit" color="success">
-              Register
-            </Button>
+            <Stack spacing={1}>
+              <Button variant="contained" type="submit" color="success">
+                Register
+              </Button>
+
+              <Link to="/login">
+                <Typography variant="subtitle2">
+                  Already registered? Login
+                </Typography>
+              </Link>
+            </Stack>
           </form>
         )}
       </Formik>
