@@ -13,10 +13,29 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
+import LogoutDialog from "./LogoutDialog";
 const drawerWidth = 240;
-const navItems = ["Home", "Product", "About"];
+const navItems = [
+  {
+    id: 1,
+    name: "Home",
+    path: "/",
+  },
+  {
+    id: 2,
+    name: "Product",
+    path: "/product/list",
+  },
+  {
+    id: 3,
+    name: "About",
+    path: "/about",
+  },
+];
 
 const Header = (props) => {
+  const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -32,9 +51,9 @@ const Header = (props) => {
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+          <ListItem key={item.id} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -46,7 +65,7 @@ const Header = (props) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex", marginBottom: "10rem" }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar component="nav" sx={{ backgroundColor: "#5D3587" }}>
         <Toolbar>
@@ -68,8 +87,14 @@ const Header = (props) => {
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" }, mr: "6rem" }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
+              <Button
+                key={item.id}
+                sx={{ color: "#fff" }}
+                onClick={() => {
+                  navigate(item.path);
+                }}
+              >
+                {item.name}
               </Button>
             ))}
           </Box>
@@ -84,7 +109,7 @@ const Header = (props) => {
             }}
           >
             <p>cart</p>
-            <p>logout</p>
+            <LogoutDialog />
           </Box>
         </Toolbar>
       </AppBar>

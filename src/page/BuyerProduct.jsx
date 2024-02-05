@@ -6,7 +6,7 @@ import { Box, CircularProgress } from "@mui/material";
 import { useQuery } from "react-query";
 import $axios from "../../lib/axios.instance";
 
-const BuyerProduct = () => {
+const BuyerProductList = () => {
   const { isLoading, error, isError, data } = useQuery({
     queryKey: ["buyer-product-list"],
     queryFn: async () => {
@@ -24,7 +24,6 @@ const BuyerProduct = () => {
   }
   return (
     <>
-      <Header />
       <Box
         sx={{
           display: "flex",
@@ -38,10 +37,8 @@ const BuyerProduct = () => {
           return <ProductCard key={item._id} {...item} />;
         })}
       </Box>
-
-      <Footer />
     </>
   );
 };
 
-export default BuyerProduct;
+export default BuyerProductList;

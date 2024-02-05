@@ -32,7 +32,7 @@ const ProductCard = ({ name, brand, price, description }) => {
         <Typography variant="h6" gutterBottom>
           Rs.{price}
         </Typography>
-        <Typography>{description}</Typography>
+        <Typography>{description}...</Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "center", pb: "1rem" }}>
         <Button size="medium" variant="contained" fullWidth color="success">
