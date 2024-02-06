@@ -10,7 +10,6 @@ const ProductList = () => {
     <Box
       sx={{
         mt: "5rem",
-        padding: "2rem",
       }}
     >
       {userRole === "seller" ? <SellerProductList /> : <BuyerProductList />}

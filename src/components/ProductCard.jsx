@@ -5,8 +5,10 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Chip, Stack } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ name, brand, price, description }) => {
+const ProductCard = ({ name, brand, image, price, description, _id }) => {
+  const navigate = useNavigate();
   return (
     <Card
       sx={{
@@ -32,10 +34,18 @@ const ProductCard = ({ name, brand, price, description }) => {
         <Typography variant="h6" gutterBottom>
           Rs.{price}
         </Typography>
-        <Typography>{description}...</Typography>
+        <Typography height={100}>{description}...</Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "center", pb: "1rem" }}>
-        <Button size="medium" variant="contained" fullWidth color="success">
+        <Button
+          size="medium"
+          variant="contained"
+          fullWidth
+          color="success"
+          onClick={() => {
+            navigate(`/product/detail/${_id}`);
+          }}
+        >
           Explore
         </Button>
       </CardActions>

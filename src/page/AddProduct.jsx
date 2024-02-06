@@ -1,17 +1,29 @@
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   FormHelperText,
+  InputAdornment,
   InputLabel,
+  LinearProgress,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
 import { Formik } from "formik";
 import React from "react";
+import { useMutation } from "react-query";
 import * as Yup from "yup";
+import $axios from "../../lib/axios.instance";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  openErrorSnackbar,
+  openSuccessSnackbar,
+} from "../store/slices/snackbar.slice";
 
 const categories = [
   "electronics",
@@ -24,6 +36,24 @@ const categories = [
   "stationery",
 ];
 const AddProduct = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { isLoading, mutate: addProduct } = useMutation({
+    mutationKey: ["add-product"],
+    mutationFn: async (values) => {
+      return await $axios.post("/product/add", values);
+    },
+    onSuccess: (response) => {
+      navigate("/product/list");
+
+      dispatch(openSuccessSnackbar(response?.data?.message));
+    },
+    onError: (error) => {
+      dispatch(openErrorSnackbar(error?.response?.data?.message));
+    },
+  });
+
   return (
     <Box
       sx={{
@@ -33,6 +63,7 @@ const AddProduct = () => {
         width: "100vw",
       }}
     >
+      {isLoading && <LinearProgress color="secondary" />}
       <Formik
         initialValues={{
           name: "",
@@ -52,9 +83,15 @@ const AddProduct = () => {
             .max(30, "Brand must be at max 30 characters.")
             .required("Brand is required.")
             .trim(),
-          price: Yup.number().min(0).required("Price is required."),
-          quantity: Yup.number().min(1).required("Quantity is required."),
-          category: Yup.string().oneOf(categories),
+          price: Yup.number()
+            .min(0, "Price must be positive number.")
+            .required("Price is required."),
+          quantity: Yup.number()
+            .min(1, "Quantity must be at least 1.")
+            .required("Quantity is required."),
+          category: Yup.string()
+            .oneOf(categories)
+            .required("Category is required."),
           image: Yup.string().nullable(),
           description: Yup.string()
             .required("Description is required.")
@@ -62,7 +99,7 @@ const AddProduct = () => {
             .max(1000, "Description must be at max 1000 characters."),
         })}
         onSubmit={(values) => {
-          console.log(values);
+          addProduct(values);
         }}
       >
         {({ errors, touched, handleSubmit, getFieldProps }) => (
@@ -103,11 +140,15 @@ const AddProduct = () => {
               ) : null}
             </FormControl>
 
-            <FormControl>
-              <TextField
-                variant="outlined"
-                label="Price"
+            <FormControl fullWidth>
+              <InputLabel htmlFor="outlined-adornment-amount">Price</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-amount"
                 type="number"
+                startAdornment={
+                  <InputAdornment position="start">Rs.</InputAdornment>
+                }
+                label="Price"
                 {...getFieldProps("price")}
               />
               {touched.price && errors.price ? (
@@ -140,6 +181,9 @@ const AddProduct = () => {
                   );
                 })}
               </Select>
+              {touched.category && errors.category ? (
+                <FormHelperText error>{errors.category}</FormHelperText>
+              ) : null}
             </FormControl>
 
             <FormControl>
@@ -147,7 +191,7 @@ const AddProduct = () => {
                 variant="outlined"
                 label="Description"
                 multiline
-                rows={4}
+                rows={8}
                 {...getFieldProps("description")}
               />
               {touched.description && errors.description ? (
