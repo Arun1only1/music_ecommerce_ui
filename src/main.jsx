@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 import store from "./store";
 
-const router = createBrowserRouter([...mainRoutes, ...guestRoutes]);
+const router = createBrowserRouter([...guestRoutes, ...mainRoutes]);
 // Create a client
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")).render(

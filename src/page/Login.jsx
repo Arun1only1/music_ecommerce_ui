@@ -26,7 +26,7 @@ const Login = () => {
       return await $axios.post("/user/login", values);
     },
     onSuccess: (response) => {
-      navigate("/");
+      navigate("/home");
 
       localStorage.setItem("token", response?.data?.token);
 
