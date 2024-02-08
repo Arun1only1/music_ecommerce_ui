@@ -12,6 +12,7 @@ import ProductDescription from "../components/ProductDescription";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import $axios from "../../lib/axios.instance";
+import Loader from "../components/Loader";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -27,7 +28,7 @@ const ProductDetail = () => {
   console.log(productData);
 
   if (isLoading) {
-    return <CircularProgress />;
+    return <Loader />;
   }
 
   return (

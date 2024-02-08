@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import $axios from "../../lib/axios.instance";
 import ProductCard from "../components/ProductCard";
+import Loader from "../components/Loader";
 
 const SellerProductList = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const SellerProductList = () => {
   const productList = data?.data?.products;
 
   if (isLoading) {
-    return <CircularProgress />;
+    return <Loader />;
   }
 
   return (

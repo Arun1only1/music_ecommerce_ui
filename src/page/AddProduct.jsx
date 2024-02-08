@@ -55,14 +55,7 @@ const AddProduct = () => {
   });
 
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "grid",
-        placeItems: "center",
-        width: "100vw",
-      }}
-    >
+    <Box>
       {isLoading && <LinearProgress color="secondary" />}
       <Formik
         initialValues={{

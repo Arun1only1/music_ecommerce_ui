@@ -1,6 +1,9 @@
-import { Button, Chip, Grid, Typography } from "@mui/material";
+import { Button, Chip, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteProductDialog from "./DeleteProductDialog";
 
 const ProductDescription = ({
   name,
@@ -63,15 +66,20 @@ const ProductDescription = ({
 
       <Grid item mt="1rem">
         {userRole === "seller" ? (
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => {
-              navigate(`/product/edit/${_id}`);
-            }}
-          >
-            Edit Product
-          </Button>
+          <Stack direction="row" spacing={4}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => {
+                navigate(`/product/edit/${_id}`);
+              }}
+              startIcon={<EditIcon />}
+            >
+              <Typography>Edit Product</Typography>
+            </Button>
+
+            <DeleteProductDialog />
+          </Stack>
         ) : (
           <Button variant="contained" color="success">
             Add to cart
