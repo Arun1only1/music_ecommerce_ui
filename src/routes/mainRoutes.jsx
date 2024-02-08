@@ -1,6 +1,7 @@
 import MainLayout from "../layout/MainLayout";
 import About from "../page/About";
 import AddProduct from "../page/AddProduct";
+import EditProduct from "../page/EditProduct";
 import Home from "../page/Home";
 import ProductDetail from "../page/ProductDetail";
 import ProductList from "../page/ProductList";
@@ -29,6 +30,10 @@ export const mainRoutes = [
       {
         path: "product/detail/:id",
         element: <ProductDetail />,
+      },
+      {
+        path: "product/edit/:id",
+        element: <EditProduct />,
       },
     ],
   },

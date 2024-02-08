@@ -12,15 +12,24 @@ const ProductCard = ({ name, brand, image, price, description, _id }) => {
   return (
     <Card
       sx={{
+        display: "flex",
+        flexDirection: "column",
         width: "30%",
         boxShadow:
           " rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px",
       }}
     >
       <img
-        height="300px"
-        style={{ objectFit: "cover" }}
-        src="https://www.hindustantimes.com/ht-img/img/2023/09/18/550x309/32_inch_LED_TV_1695036349175_1695036371179.JPG"
+        style={{
+          objectFit: "contain",
+          height: "300px",
+          width: "100%",
+          padding: "1rem 0",
+        }}
+        src={
+          image ||
+          "https://www.dcgpac.com/media/catalog/product/placeholder/default/original_4.png"
+        }
       />
       <CardContent>
         <Stack direction="row" justifyContent="space-between">

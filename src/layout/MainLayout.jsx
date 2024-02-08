@@ -3,16 +3,29 @@ import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CustomSnackbar from "../components/CustomSnackbar";
+import { Box, Stack } from "@mui/material";
 
 const MainLayout = () => {
   return (
     <>
       <CustomSnackbar />
-      <Header />
+      <Stack spacing={10}>
+        <Header />
 
-      <Outlet />
+        <Box
+          sx={{
+            padding: "2rem",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "70vh",
+          }}
+        >
+          <Outlet />
+        </Box>
 
-      <Footer />
+        <Footer />
+      </Stack>
     </>
   );
 };

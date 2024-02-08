@@ -1,55 +1,50 @@
-import { Chip, Grid, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Chip,
+  CircularProgress,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React from "react";
+import ProductImage from "../components/ProductImage";
+import ProductDescription from "../components/ProductDescription";
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import $axios from "../../lib/axios.instance";
 
 const ProductDetail = () => {
-  return (
-    <Grid container sx={{ mt: "5rem" }}>
-      <Grid item xs={12} md={6}>
-        <img
-          style={{ objectFit: "cover", height: "700px", width: "90%" }}
-          src="https://my.sharp/sites/default/files/uploads/2021-09/4%20Best%20Reasons%20Why%20TVs%20Can%20Improve%20Your%20Lifestyle-%20SHARP%20Malaysia.jpg"
-        />
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        md={6}
-        sx={{
-          display: "flex",
-          gap: "2rem",
-          flexDirection: "column",
-          pr: "5rem",
-        }}
-      >
-        <Typography variant="h4">TV</Typography>
-        <Typography variant="h5">Samsung</Typography>
-        <Stack sx={{ width: "30%" }}>
-          <Chip
-            label="Electronics"
-            color="primary"
-            variant="outlined"
-            size="medium"
-          />
-        </Stack>
+  const { id } = useParams();
 
-        <Typography textAlign="justify">
-          Introducing our cutting-edge projector, a perfect blend of innovation
-          and performance for an immersive audio-visual experience. Boasting 4K
-          Ultra HD resolution, this sleek device delivers crystal-clear images
-          with vibrant colors and exceptional clarity. Its advanced LED
-          technology ensures long-lasting brightness, while the dynamic contrast
-          ratio enhances the depth of every scene. Introducing our cutting-edge
-          projector, a perfect blend of innovation and performance for an
-          immersive audio-visual experience. Boasting 4K Ultra HD resolution,
-          this sleek device delivers crystal-clear images with vibrant colors
-          and exceptional clarity. Its advanced LED technology ensures
-          long-lasting brightness, while the dynamic contrast ratio enhances the
-          depth of every scene
-        </Typography>
-        <Typography>Price:Rs.7500</Typography>
-        <Typography>Available quantity:5</Typography>
-      </Grid>
-    </Grid>
+  const { isLoading, isError, error, data } = useQuery({
+    queryKey: ["product-detail"],
+    queryFn: async () => {
+      return await $axios.get(`/product/details/${id}`);
+    },
+  });
+
+  const productData = data?.data?.product;
+  console.log(productData);
+
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        marginTop: "7rem",
+        gap: "1rem",
+        padding: "2rem",
+        width: "85%",
+        boxShadow:
+          " rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
+      }}
+    >
+      <ProductImage imageUrl={productData?.image} />
+      <ProductDescription {...productData} />
+    </Box>
   );
 };
 
