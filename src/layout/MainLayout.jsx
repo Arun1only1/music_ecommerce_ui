@@ -16,6 +16,7 @@ const MainLayout = () => {
           sx={{
             padding: "2rem",
             display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
             minHeight: "70vh",

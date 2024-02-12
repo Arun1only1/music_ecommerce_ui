@@ -15,6 +15,9 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import LogoutDialog from "./LogoutDialog";
+import ShoppingCartTwoToneIcon from "@mui/icons-material/ShoppingCartTwoTone";
+import { Badge } from "@mui/material";
+
 const drawerWidth = 240;
 const navItems = [
   {
@@ -108,7 +111,9 @@ const Header = (props) => {
               gap: "2rem",
             }}
           >
-            <p>cart</p>
+            <Badge badgeContent={4} color="primary">
+              <ShoppingCartTwoToneIcon sx={{ color: "#fff" }} />
+            </Badge>
             <LogoutDialog />
           </Box>
         </Toolbar>

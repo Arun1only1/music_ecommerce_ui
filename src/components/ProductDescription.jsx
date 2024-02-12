@@ -1,9 +1,9 @@
+import EditIcon from "@mui/icons-material/Edit";
 import { Button, Chip, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteProductDialog from "./DeleteProductDialog";
+import ItemCounter from "./ItemCounter";
 
 const ProductDescription = ({
   name,
@@ -64,8 +64,10 @@ const ProductDescription = ({
         />
       </Grid>
 
+      {userRole === "buyer" &&  <ItemCounter availableQuantity={quantity} />}
+
       <Grid item mt="1rem">
-        {userRole === "seller" ? (
+        {userRole === "seller" && (
           <Stack direction="row" spacing={4}>
             <Button
               variant="contained"
@@ -80,10 +82,6 @@ const ProductDescription = ({
 
             <DeleteProductDialog />
           </Stack>
-        ) : (
-          <Button variant="contained" color="success">
-            Add to cart
-          </Button>
         )}
       </Grid>
     </Grid>
