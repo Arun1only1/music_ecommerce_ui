@@ -11,6 +11,7 @@ import {
   openErrorSnackbar,
   openSuccessSnackbar,
 } from "../store/slices/snackbar.slice";
+import ContinueShopping from "../components/ContinueShopping";
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const CartPage = () => {
   });
 
   const cartData = data?.data?.cartData;
+  const orderSummary = data?.data?.orderSummary;
 
   // clear cart
   const { isLoading: flushCartLoading, mutate: flushCart } = useMutation({
@@ -35,6 +37,7 @@ const CartPage = () => {
     onSuccess: (res) => {
       dispatch(openSuccessSnackbar(res?.data?.message));
       queryClient.invalidateQueries("cart-list");
+      queryClient.invalidateQueries("cart-item-count");
     },
     onError: (error) => {
       dispatch(openErrorSnackbar(error?.response?.data?.message));
@@ -45,6 +48,9 @@ const CartPage = () => {
     return <Loader />;
   }
 
+  if (cartData?.length === 0) {
+    return <ContinueShopping />;
+  }
   return (
     <Box
       sx={{
@@ -73,23 +79,17 @@ const CartPage = () => {
           flexWrap: "wrap",
         }}
       >
-        <Stack sx={{ gap: "1rem" }}>
-          {cartData.length === 0 && (
-            <Button
-              variant="contained"
-              onClick={() => {
-                navigate("/product/list");
-              }}
-            >
-              Continue shopping
-            </Button>
-          )}
+        <Stack>
           {cartData.map((item) => {
             return <CartItem key={item._id} {...item} />;
           })}
         </Stack>
         <Stack>
-          <CartCheckout />
+          <CartCheckout
+            subTotal={orderSummary?.subTotal}
+            discount={orderSummary?.discount}
+            grandTotal={orderSummary?.grandTotal}
+          />
         </Stack>
       </Box>
     </Box>

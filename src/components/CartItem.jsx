@@ -1,8 +1,10 @@
 import {
+  Box,
   Button,
   Chip,
   Grid,
   IconButton,
+  LinearProgress,
   Stack,
   Typography,
 } from "@mui/material";
@@ -19,7 +21,7 @@ import {
 } from "../store/slices/snackbar.slice";
 import Loader from "./Loader";
 
-const CartItem = ({ _id, name, price, brand, orderedQuantity }) => {
+const CartItem = ({ _id, name, price, brand, orderedQuantity, productId }) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
@@ -31,72 +33,103 @@ const CartItem = ({ _id, name, price, brand, orderedQuantity }) => {
     onSuccess: (response) => {
       dispatch(openSuccessSnackbar(response?.data?.message));
       queryClient.invalidateQueries("cart-list");
+      queryClient.invalidateQueries("cart-item-count");
     },
     onError: (error) => {
       dispatch(openErrorSnackbar(error?.response?.data?.message));
     },
   });
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  const { isLoading: isUpdateQuantityLoading, mutate: updateCartItemQuantity } =
+    useMutation({
+      mutationKey: ["update-cart-quantity"],
+      mutationFn: async (action) => {
+        return await $axios.put("/cart/item/update-quantity", {
+          productId,
+          action,
+        });
+      },
+      onSuccess: (res) => {
+        // dispatch(openSuccessSnackbar(res?.data?.message));
+        queryClient.invalidateQueries("cart-list");
+      },
+      onError: (error) => {
+        dispatch(openErrorSnackbar(error?.response?.data?.message));
+      },
+    });
+
   return (
-    <Grid
-      container
-      sx={{
-        padding: "1rem",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "2rem",
-        boxShadow:
-          "rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px",
-      }}
-    >
-      <Grid item>
-        <img
-          src="https://www.lg.com/np/images/tvs/md07531468/gallery/N01_D1.jpg"
-          alt=""
-          style={{
-            height: "200px",
-          }}
-        />
-      </Grid>
+    <Box sx={{ mt: "1rem" }}>
+      {(isUpdateQuantityLoading || isLoading) && (
+        <LinearProgress color="secondary" />
+      )}
+      <Grid
+        container
+        sx={{
+          padding: "1rem",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "2rem",
+          boxShadow:
+            "rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px",
+        }}
+      >
+        <Grid item>
+          <img
+            src="https://www.lg.com/np/images/tvs/md07531468/gallery/N01_D1.jpg"
+            alt=""
+            style={{
+              height: "150px",
+            }}
+          />
+        </Grid>
 
-      <Grid item>
-        <Stack
-          spacing={2}
-          sx={{ justifyContent: "center", alignItems: "center" }}
-        >
-          <Typography variant="h6">{name}</Typography>
-          <Chip label={brand} color="secondary" />
-        </Stack>
-      </Grid>
-      <Grid item>
-        <Typography variant="h6">Rs.{price}</Typography>
-      </Grid>
+        <Grid item>
+          <Stack
+            spacing={2}
+            sx={{ justifyContent: "center", alignItems: "center" }}
+          >
+            <Typography variant="h6">{name}</Typography>
+            <Chip label={brand} color="secondary" />
+          </Stack>
+        </Grid>
+        <Grid item>
+          <Typography variant="h6">Rs.{price}</Typography>
+        </Grid>
 
-      <Grid item>
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{ justifyContent: "center", alignItems: "center" }}
-        >
-          <IconButton>
-            <AddIcon />
+        <Grid item>
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{ justifyContent: "center", alignItems: "center" }}
+          >
+            <IconButton
+              disabled={isUpdateQuantityLoading}
+              onClick={() => {
+                updateCartItemQuantity("inc");
+              }}
+            >
+              <AddIcon />
+            </IconButton>
+            <Typography variant="h5">{orderedQuantity}</Typography>
+            <IconButton
+              onClick={() => {
+                updateCartItemQuantity("dec");
+              }}
+              disabled={orderedQuantity === 1}
+            >
+              <RemoveIcon />
+            </IconButton>
+          </Stack>
+        </Grid>
+
+        <Grid item>
+          <IconButton color="error" onClick={deleteCartItem}>
+            <ClearIcon />
           </IconButton>
-          <Typography variant="h5">{orderedQuantity}</Typography>
-          <IconButton>
-            <RemoveIcon />
-          </IconButton>
-        </Stack>
+        </Grid>
       </Grid>
-
-      <Grid item>
-        <Button color="error" endIcon={<ClearIcon />} onClick={deleteCartItem}>
-          Remove item
-        </Button>
-      </Grid>
-    </Grid>
+    </Box>
   );
 };
 

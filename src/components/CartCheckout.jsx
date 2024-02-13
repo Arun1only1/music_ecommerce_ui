@@ -1,7 +1,7 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
 
-const CartCheckout = () => {
+const CartCheckout = ({ subTotal, discount, grandTotal }) => {
   return (
     <Box
       sx={{
@@ -22,7 +22,7 @@ const CartCheckout = () => {
         }}
       >
         <Typography>Sub total</Typography>
-        <Typography>15500</Typography>
+        <Typography>Rs.{subTotal}</Typography>
       </Stack>
       <Stack
         direction="row"
@@ -31,7 +31,7 @@ const CartCheckout = () => {
         }}
       >
         <Typography>Discount </Typography>
-        <Typography>500</Typography>
+        <Typography>Rs.{discount}</Typography>
       </Stack>
       <Stack
         direction="row"
@@ -40,7 +40,7 @@ const CartCheckout = () => {
         }}
       >
         <Typography>Grand total</Typography>
-        <Typography>15000</Typography>
+        <Typography>Rs.{grandTotal}</Typography>
       </Stack>
       <Button variant="contained" color="success" fullWidth>
         <Typography>proceed to checkout</Typography>

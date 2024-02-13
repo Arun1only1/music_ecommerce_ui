@@ -2,7 +2,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { Button, IconButton, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import $axios from "../../lib/axios.instance";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -16,6 +16,8 @@ const ItemCounter = ({ availableQuantity }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const queryClient = useQueryClient();
 
   const [count, setCount] = useState(1);
 
@@ -44,8 +46,8 @@ const ItemCounter = ({ availableQuantity }) => {
       });
     },
     onSuccess: (res) => {
-      navigate("/cart");
       dispatch(openSuccessSnackbar(res?.data?.message));
+      queryClient.invalidateQueries("cart-item-count");
     },
     onError: (error) => {
       dispatch(openErrorSnackbar(error?.response?.data?.message));
