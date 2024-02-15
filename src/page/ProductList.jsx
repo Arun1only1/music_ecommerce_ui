@@ -1,7 +1,7 @@
 import React from "react";
 import SellerProductList from "./SellerProduct";
 import BuyerProductList from "./BuyerProduct";
-import { Box } from "@mui/material";
+import { Box, Input, InputAdornment } from "@mui/material";
 
 const ProductList = () => {
   const userRole = localStorage.getItem("role");

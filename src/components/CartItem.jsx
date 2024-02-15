@@ -1,6 +1,8 @@
+import AddIcon from "@mui/icons-material/Add";
+import ClearIcon from "@mui/icons-material/Clear";
+import RemoveIcon from "@mui/icons-material/Remove";
 import {
   Box,
-  Button,
   Chip,
   Grid,
   IconButton,
@@ -9,19 +11,23 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import ClearIcon from "@mui/icons-material/Clear";
 import { useMutation, useQueryClient } from "react-query";
-import $axios from "../../lib/axios.instance";
 import { useDispatch } from "react-redux";
+import $axios from "../../lib/axios.instance";
 import {
   openErrorSnackbar,
   openSuccessSnackbar,
 } from "../store/slices/snackbar.slice";
-import Loader from "./Loader";
 
-const CartItem = ({ _id, name, price, brand, orderedQuantity, productId }) => {
+const CartItem = ({
+  _id,
+  name,
+  price,
+  brand,
+  orderedQuantity,
+  productId,
+  image,
+}) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
@@ -76,10 +82,15 @@ const CartItem = ({ _id, name, price, brand, orderedQuantity, productId }) => {
       >
         <Grid item>
           <img
-            src="https://www.lg.com/np/images/tvs/md07531468/gallery/N01_D1.jpg"
-            alt=""
+            src={
+              image ||
+              "https://www.dcgpac.com/media/catalog/product/placeholder/default/original_4.png"
+            }
+            alt={name}
             style={{
-              height: "150px",
+              height: "200px",
+              width: "200px",
+              objectFit: "contain",
             }}
           />
         </Grid>
