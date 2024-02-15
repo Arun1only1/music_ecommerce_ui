@@ -1,7 +1,9 @@
 import { Grid } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const ProductImage = ({ imageUrl }) => {
+const ProductImage = ({ imageUrl, productId }) => {
+  const navigate = useNavigate();
   return (
     <Grid
       container
@@ -13,7 +15,11 @@ const ProductImage = ({ imageUrl }) => {
     >
       <Grid item>
         <img
-          style={{ objectFit: "cover", width: "100%", height: "600px" }}
+          style={{
+            objectFit: "cover",
+            width: "100%",
+            height: "600px",
+          }}
           src={
             imageUrl ||
             "https://www.dcgpac.com/media/catalog/product/placeholder/default/original_4.png"

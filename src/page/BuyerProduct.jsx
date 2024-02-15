@@ -1,6 +1,6 @@
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
-  CircularProgress,
   FormControl,
   Input,
   InputAdornment,
@@ -10,8 +10,8 @@ import {
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import $axios from "../../lib/axios.instance";
+import Loader from "../components/Loader";
 import ProductCard from "../components/ProductCard";
-import SearchIcon from "@mui/icons-material/Search";
 
 const BuyerProductList = () => {
   const [page, setPage] = useState(1);
@@ -32,7 +32,7 @@ const BuyerProductList = () => {
   const totalPages = data?.data?.numberOfPages;
 
   if (isLoading) {
-    return <CircularProgress />;
+    return <Loader />;
   }
   return (
     <>

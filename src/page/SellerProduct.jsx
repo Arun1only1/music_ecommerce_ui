@@ -1,10 +1,10 @@
-import { Box, Button, CircularProgress, Grid, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import React from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import $axios from "../../lib/axios.instance";
-import ProductCard from "../components/ProductCard";
 import Loader from "../components/Loader";
+import ProductCard from "../components/ProductCard";
 
 const SellerProductList = () => {
   const navigate = useNavigate();
