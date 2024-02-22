@@ -7,7 +7,10 @@ const CartCheckout = ({ subTotal, discount, grandTotal }) => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: "400px",
+        width: {
+          xs: "100%",
+          md: "400px",
+        },
         gap: "1rem",
         padding: "2rem",
         boxShadow:

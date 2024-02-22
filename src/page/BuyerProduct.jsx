@@ -1,4 +1,3 @@
-import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   FormControl,
@@ -12,18 +11,22 @@ import { useQuery } from "react-query";
 import $axios from "../../lib/axios.instance";
 import Loader from "../components/Loader";
 import ProductCard from "../components/ProductCard";
+import { useSelector } from "react-redux";
+import NoProductFound from "../components/NoProductFound";
 
 const BuyerProductList = () => {
   const [page, setPage] = useState(1);
-  const [searchText, setSearchText] = useState("");
+
+  const { searchText, category } = useSelector((state) => state.product);
 
   const { isLoading, error, isError, data } = useQuery({
-    queryKey: ["buyer-product-list", page, searchText],
+    queryKey: ["buyer-product-list", page, searchText, category],
     queryFn: async () => {
       return await $axios.post("/product/buyer/list", {
         page,
         limit: 9,
         searchText,
+        category: category || null,
       });
     },
   });
@@ -34,29 +37,13 @@ const BuyerProductList = () => {
   if (isLoading) {
     return <Loader />;
   }
+
+  if (productList.length < 1) {
+    return <NoProductFound />;
+  }
+
   return (
     <>
-      <FormControl
-        variant="standard"
-        sx={{
-          m: "0 3rem 3rem 0",
-          display: "grid",
-          placeContent: "flex-end",
-        }}
-      >
-        <Input
-          onChange={(event) => {
-            setSearchText(event?.target?.value);
-          }}
-          value={searchText}
-          id="input-with-icon-adornment"
-          startAdornment={
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          }
-        />
-      </FormControl>
       <Box
         sx={{
           display: "flex",

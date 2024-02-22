@@ -65,19 +65,29 @@ const CartItem = ({
     });
 
   return (
-    <Box sx={{ mt: "1rem" }}>
+    <Box sx={{ mt: "1rem", width: { xs: "100%", md: "auto" } }}>
       {(isUpdateQuantityLoading || isLoading) && (
         <LinearProgress color="secondary" />
       )}
       <Grid
         container
         sx={{
+          flexDirection: {
+            xs: "column",
+            md: "row",
+          },
+          width: {
+            xs: "100%",
+          },
           padding: "1rem",
           justifyContent: "center",
           alignItems: "center",
           gap: "2rem",
-          boxShadow:
-            "rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px",
+
+          boxShadow: {
+            xs: "none",
+            md: "rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px",
+          },
         }}
       >
         <Grid item>
@@ -127,7 +137,7 @@ const CartItem = ({
               onClick={() => {
                 updateCartItemQuantity("dec");
               }}
-              disabled={orderedQuantity === 1}
+              disabled={orderedQuantity === 1 || isUpdateQuantityLoading}
             >
               <RemoveIcon />
             </IconButton>

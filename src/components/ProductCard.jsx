@@ -14,7 +14,12 @@ const ProductCard = ({ name, brand, image, price, description, _id }) => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: "30%",
+        width: {
+          xs: "100%",
+          sm: "80%",
+          md: "40%",
+          lg: "25%",
+        },
         boxShadow:
           " rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px",
       }}
@@ -27,7 +32,7 @@ const ProductCard = ({ name, brand, image, price, description, _id }) => {
           objectFit: "contain",
           height: "300px",
           width: "100%",
-          padding: "1rem 0",
+          padding: "5px",
           cursor: "pointer",
         }}
         src={

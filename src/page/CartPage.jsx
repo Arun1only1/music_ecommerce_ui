@@ -56,30 +56,40 @@ const CartPage = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: "90vw",
+        width: "100%",
         flexWrap: "wrap",
       }}
     >
-      <Stack direction="row" spacing={6} mb="2rem">
-        <Typography variant="h4">Shopping cart</Typography>
-        {cartData.length > 0 && (
-          <Button variant="contained" onClick={flushCart}>
-            Clear cart
-          </Button>
-        )}
-      </Stack>
+      <Typography variant="h4" textAlign="center">
+        Shopping cart
+      </Typography>
 
       <Box
         sx={{
-          width: "100%",
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           alignItems: "flex-start",
           flexWrap: "wrap",
+          mt: "3rem",
         }}
       >
         <Stack>
+          {cartData.length > 0 && (
+            <Button
+              variant="contained"
+              onClick={flushCart}
+              sx={{
+                width: {
+                  xs: "100%",
+                  md: "20%",
+                },
+              }}
+              color="error"
+            >
+              Clear cart
+            </Button>
+          )}
           {cartData.map((item) => {
             return <CartItem key={item._id} {...item} />;
           })}

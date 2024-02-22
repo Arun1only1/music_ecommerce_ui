@@ -12,9 +12,10 @@ import {
   Select,
   TextField,
   Typography,
+  Stack,
 } from "@mui/material";
 import { Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { useMutation } from "react-query";
 import * as Yup from "yup";
 import $axios from "../../lib/axios.instance";
@@ -24,6 +25,7 @@ import {
   openErrorSnackbar,
   openSuccessSnackbar,
 } from "../store/slices/snackbar.slice";
+import axios from "axios";
 
 const categories = [
   "electronics",
@@ -36,6 +38,10 @@ const categories = [
   "stationery",
 ];
 const AddProduct = () => {
+  const [productImage, setProductImage] = useState(null);
+  const [localUrl, setLocalUrl] = useState(null);
+  const [imageLoading, setImageLoading] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -56,7 +62,7 @@ const AddProduct = () => {
 
   return (
     <Box>
-      {isLoading && <LinearProgress color="secondary" />}
+      {(isLoading || imageLoading) && <LinearProgress color="secondary" />}
       <Formik
         initialValues={{
           name: "",
@@ -91,7 +97,33 @@ const AddProduct = () => {
             .trim()
             .max(1000, "Description must be at max 1000 characters."),
         })}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
+          let imageUrl = "";
+          if (productImage) {
+            const cloudName = "dlkcko4n6";
+
+            // creates form data object
+            const data = new FormData();
+            data.append("file", productImage);
+            data.append("upload_preset", "nepal_market");
+            data.append("cloud_name", cloudName);
+
+            try {
+              setImageLoading(true);
+              const response = await axios.post(
+                `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
+                data
+              );
+
+              imageUrl = response?.data?.secure_url;
+              setImageLoading(false);
+            } catch (error) {
+              setImageLoading(false);
+              dispatch(openErrorSnackbar("Image upload failed"));
+            }
+          }
+
+          values.image = imageUrl;
           addProduct(values);
         }}
       >
@@ -110,6 +142,21 @@ const AddProduct = () => {
             }}
           >
             <Typography variant="h4">Add product</Typography>
+
+            <Stack sx={{ width: "200px" }}>
+              {productImage && <img src={localUrl} alt="" />}
+            </Stack>
+
+            <FormControl>
+              <input
+                type="file"
+                onChange={(event) => {
+                  const file = event?.target?.files[0];
+                  setProductImage(file);
+                  setLocalUrl(URL.createObjectURL(file));
+                }}
+              />
+            </FormControl>
 
             <FormControl>
               <TextField

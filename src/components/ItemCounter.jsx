@@ -54,10 +54,6 @@ const ItemCounter = ({ availableQuantity }) => {
     },
   });
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
     <>
       <Stack
@@ -77,6 +73,12 @@ const ItemCounter = ({ availableQuantity }) => {
         </IconButton>
       </Stack>
       <Button
+        sx={{
+          width: {
+            xs: "100%",
+            md: "auto",
+          },
+        }}
         variant="contained"
         color="success"
         onClick={() => {

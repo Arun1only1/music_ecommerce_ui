@@ -9,7 +9,7 @@ const MainLayout = () => {
   return (
     <>
       <CustomSnackbar />
-      <Stack spacing={10}>
+      <Stack spacing={7}>
         <Header />
 
         <Box

@@ -6,6 +6,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useNavigate } from "react-router-dom";
+import { IconButton } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const LogoutDialog = () => {
   const [open, setOpen] = React.useState(false);
@@ -28,9 +30,9 @@ const LogoutDialog = () => {
 
   return (
     <React.Fragment>
-      <Button sx={{ color: "#fff" }} onClick={handleClickOpen}>
-        Logout
-      </Button>
+      <IconButton onClick={handleClickOpen} sx={{ color: "#fff" }}>
+        <LogoutIcon />
+      </IconButton>
       <Dialog
         open={open}
         onClose={handleClose}

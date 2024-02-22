@@ -11,9 +11,10 @@ import {
   Select,
   TextField,
   Typography,
+  Stack,
 } from "@mui/material";
 import { Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import * as Yup from "yup";
 import $axios from "../../lib/axios.instance";
@@ -24,7 +25,21 @@ import {
   openErrorSnackbar,
   openSuccessSnackbar,
 } from "../store/slices/snackbar.slice";
+import { styled } from "@mui/material/styles";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import axios from "axios";
 
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 const categories = [
   "electronics",
   "clothing",
@@ -36,6 +51,10 @@ const categories = [
   "stationery",
 ];
 const EditProduct = () => {
+  const [localUrl, setLocalUrl] = useState(null);
+  const [productImage, setProductImage] = useState(null);
+  const [imageLoading, setImageLoading] = useState(false);
+
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -71,7 +90,9 @@ const EditProduct = () => {
 
   return (
     <Box>
-      {editProductLoading && <LinearProgress color="secondary" />}
+      {(editProductLoading || imageLoading) && (
+        <LinearProgress color="secondary" />
+      )}
       <Formik
         enableReinitialize
         initialValues={{
@@ -107,7 +128,33 @@ const EditProduct = () => {
             .trim()
             .max(1000, "Description must be at max 1000 characters."),
         })}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
+          let imageUrl;
+          if (productImage) {
+            try {
+              const cloudName = "dlkcko4n6";
+
+              // creates form data object
+              const data = new FormData();
+              data.append("file", productImage);
+              data.append("upload_preset", "nepal_market");
+              data.append("cloud_name", cloudName);
+
+              setImageLoading(true);
+              const response = await axios.post(
+                `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
+                data
+              );
+              setImageLoading(false);
+
+              imageUrl = response?.data?.secure_url;
+            } catch (error) {
+              console.log(error.message);
+            }
+          }
+
+          values.image = imageUrl;
+
           editProduct(values);
         }}
       >
@@ -127,6 +174,38 @@ const EditProduct = () => {
             <Typography variant="h4" textAlign="center">
               Edit product
             </Typography>
+
+            <Stack
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src={localUrl || productData?.image}
+                alt={productData.name}
+                style={{ maxWidth: "500px", height: "300px" }}
+              />
+            </Stack>
+
+            <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon />}
+            >
+              Upload file
+              <VisuallyHiddenInput
+                type="file"
+                onChange={(event) => {
+                  const file = event?.target?.files[0];
+
+                  setLocalUrl(URL.createObjectURL(file));
+                  setProductImage(file);
+                }}
+              />
+            </Button>
 
             <FormControl>
               <TextField
