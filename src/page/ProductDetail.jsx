@@ -1,16 +1,9 @@
-import {
-  Box,
-  Chip,
-  CircularProgress,
-  Grid,
-  Stack,
-  Typography,
-} from "@mui/material";
+import {Box,} from "@mui/material";
 import React from "react";
 import ProductImage from "../components/ProductImage";
 import ProductDescription from "../components/ProductDescription";
-import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
+import {useParams} from "react-router-dom";
+import {useQuery} from "react-query";
 import $axios from "../../lib/axios.instance";
 import Loader from "../components/Loader";
 

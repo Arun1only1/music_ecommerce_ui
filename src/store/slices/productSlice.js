@@ -7,6 +7,7 @@ export const productSlice = createSlice({
     category: null,
     minPrice: 0,
     maxPrice: 0,
+    isFilterApplied: false,
   },
   reducers: {
     setSearchText: (state, action) => {
@@ -15,17 +16,23 @@ export const productSlice = createSlice({
 
     setCategory: (state, action) => {
       state.category = action.payload;
+      state.isFilterApplied = true;
     },
 
     clearFilter: (state, action) => {
       state.searchText = null;
       state.category = null;
+      state.minPrice = 0;
+      state.maxPrice = 0;
+      state.isFilterApplied = false;
     },
     setMinPrice: (state, action) => {
       state.minPrice = +action.payload;
+      state.isFilterApplied = true;
     },
     setMaxPrice: (state, action) => {
       state.maxPrice = +action.payload;
+      state.isFilterApplied = true;
     },
   },
 });

@@ -30,24 +30,6 @@ const SellerProductList = () => {
 
   return (
     <>
-      <Stack
-        sx={{
-          height: 100,
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Button
-          variant="contained"
-          color="success"
-          onClick={() => {
-            navigate("/product/add");
-          }}
-        >
-          Add product
-        </Button>
-      </Stack>
       <Box
         sx={{
           display: "flex",

@@ -19,6 +19,8 @@ import ShoppingCartTwoToneIcon from "@mui/icons-material/ShoppingCartTwoTone";
 import { Badge } from "@mui/material";
 import { useQuery } from "react-query";
 import $axios from "../../lib/axios.instance";
+import { useDispatch } from "react-redux";
+import { clearFilter } from "../store/slices/productSlice";
 
 const drawerWidth = 240;
 const navItems = [
@@ -40,6 +42,7 @@ const navItems = [
 ];
 
 const Header = (props) => {
+  const dispatch = useDispatch();
   const userRole = localStorage.getItem("role");
   const navigate = useNavigate();
   const { window } = props;
@@ -111,6 +114,9 @@ const Header = (props) => {
           <Box sx={{ display: { xs: "none", sm: "block" }, mr: "6rem" }}>
             {navItems.map((item) => (
               <NavLink
+                onClick={() => {
+                  dispatch(clearFilter());
+                }}
                 key={item.id}
                 to={item.path}
                 style={{ color: "white", marginRight: "1rem" }}

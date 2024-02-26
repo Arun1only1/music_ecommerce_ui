@@ -1,3 +1,4 @@
+import AuthGuard from "../guards/AuthGuard";
 import MainLayout from "../layout/MainLayout";
 import About from "../page/About";
 import AddProduct from "../page/AddProduct";
@@ -10,7 +11,11 @@ import ProductList from "../page/ProductList";
 export const mainRoutes = [
   {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <AuthGuard>
+        <MainLayout />
+      </AuthGuard>
+    ),
     children: [
       {
         path: "home",

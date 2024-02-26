@@ -1,11 +1,4 @@
-import {
-  Box,
-  FormControl,
-  Input,
-  InputAdornment,
-  Pagination,
-  Stack,
-} from "@mui/material";
+import { Box, Pagination, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import $axios from "../../lib/axios.instance";
@@ -17,16 +10,27 @@ import NoProductFound from "../components/NoProductFound";
 const BuyerProductList = () => {
   const [page, setPage] = useState(1);
 
-  const { searchText, category } = useSelector((state) => state.product);
+  const { searchText, category, minPrice, maxPrice, isFilterApplied } =
+    useSelector((state) => state.product);
 
   const { isLoading, error, isError, data } = useQuery({
-    queryKey: ["buyer-product-list", page, searchText, category],
+    queryKey: [
+      "buyer-product-list",
+      page,
+      searchText,
+      category,
+      minPrice,
+      maxPrice,
+      isFilterApplied,
+    ],
     queryFn: async () => {
       return await $axios.post("/product/buyer/list", {
         page,
         limit: 9,
         searchText,
         category: category || null,
+        minPrice: minPrice || 0,
+        maxPrice: maxPrice || 0,
       });
     },
   });
