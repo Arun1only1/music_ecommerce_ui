@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CartItem from "../components/CartItem";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import CartCheckout from "../components/CartCheckout";
@@ -17,11 +17,19 @@ const CartPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  const [orderProductList, setOrderProductList] = useState([]);
 
   const { isLoading, data } = useQuery({
     queryKey: ["cart-list"],
     queryFn: async () => {
       return await $axios.get("/cart/item/list");
+    },
+    onSuccess: (res) => {
+      const requiredData = res?.data?.cartData.map((item) => {
+        return { productId: item.productId, quantity: item.orderedQuantity };
+      });
+
+      setOrderProductList(requiredData);
     },
   });
 
@@ -96,6 +104,7 @@ const CartPage = () => {
         </Stack>
         <Stack>
           <CartCheckout
+            orderProductList={orderProductList}
             subTotal={orderSummary?.subTotal}
             discount={orderSummary?.discount}
             grandTotal={orderSummary?.grandTotal}
